@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
+
+import 'package:flutter/widgets.dart';
 
 void main() {
   runApp(CalculatorApp());
@@ -18,6 +21,15 @@ class _CalculatorAppState extends State<CalculatorApp> {
   late String textToDisplay = '';
   late String res;
   late String operation;
+
+  //parameters for theme change
+  late int number = 5;
+  late int dynamictextcolor = 0;
+  late int dynamicbgcolor = 0;
+  late int dynamictextcolor2 = 0;
+  late int dynamicopcolor = 0;
+  late int dynamicupcolor = 0;
+  late int dynamicdowncolor = 0;
 
   //the calculator button
   Widget CalculatorButton(
@@ -56,7 +68,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
             } else if (text == '+' ||
                 text == '–' ||
                 text == '✕' ||
-                text == '÷ ') {
+                text == '÷') {
               firstNum = double.parse(textToDisplay);
               res = '';
               operation = text;
@@ -85,6 +97,15 @@ class _CalculatorAppState extends State<CalculatorApp> {
                 history = firstNum.toString() +
                     operation.toString() +
                     secondNum.toString();
+              }
+            } else if (text == '0') {
+              if (double.parse(textToDisplay) % 1 == 0) {
+                double x;
+                x = double.parse(textToDisplay);
+                x = x * 10;
+                textToDisplay = x.toString();
+              } else {
+                res = double.parse(textToDisplay + '0').toString();
               }
             } else {
               //res = int.parse(textToDisplay + text).toString();
@@ -118,14 +139,79 @@ class _CalculatorAppState extends State<CalculatorApp> {
       debugShowCheckedModeBanner: false,
       title: "Calculator App",
       home: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Color(dynamicbgcolor),
         appBar: AppBar(
           title: Text(
-            "Calculator App",
-            style: TextStyle(color: Colors.black),
+            "Calculator",
+            style: TextStyle(color: Color(dynamictextcolor)),
           ),
-          backgroundColor: Colors.white,
+          backgroundColor: Color(dynamicbgcolor),
           elevation: 0,
+          actions: [
+            //icon button to genearte random theme
+            IconButton(
+              onPressed: () {
+                number++;
+                if (number == 0) {
+                  // deafualt
+                  dynamicbgcolor = 0xFFFFFFFFF;
+                  dynamicdowncolor = 0xFFEEEEEE;
+                  dynamicopcolor = 0xFFFFA000;
+                  dynamictextcolor = 0xFF000000;
+                  dynamictextcolor2 = 0xFF000000;
+                  dynamicupcolor = 0xFF9E9E9E;
+                } else if (number == 1) {
+                  // default again -- but plaeholder cause it never loads the first one
+                  dynamicbgcolor = 0xFFFFFFFFF;
+                  dynamicdowncolor = 0xFFEEEEEE;
+                  dynamicopcolor = 0xFFFFA000;
+                  dynamictextcolor = 0xFF000000;
+                  dynamictextcolor2 = 0xFF000000;
+                  dynamicupcolor = 0xFF9E9E9E;
+                } else if (number == 2) {
+                  //teal – dark theme
+                  dynamicbgcolor = 0xFF282828;
+                  dynamicdowncolor = 0x22FFFFFF;
+                  dynamicopcolor = 0xFF90C2E7;
+                  dynamictextcolor = 0xFFFFFFFF;
+                  dynamictextcolor2 = 0xFFFFFFFF;
+                  dynamicupcolor = 0x554E8098;
+                } else if (number == 3) {
+                  //army green – dark theme
+                  dynamicbgcolor = 0xFF1E2F23;
+                  dynamicdowncolor = 0xFFFFFFFF;
+                  dynamicopcolor = 0xFF34623F;
+                  dynamictextcolor = 0xFFFFFFFF;
+                  dynamictextcolor2 = 0xFF000000;
+                  dynamicupcolor = 0x5534623F;
+                } else if (number == 4) {
+                  //pink
+                  dynamicbgcolor = 0xFFFFFFFF;
+                  dynamicdowncolor = 0xFFEEEEEE;
+                  dynamicopcolor = 0xFFEACBD2;
+                  dynamictextcolor = 0xFF000000;
+                  dynamictextcolor2 = 0xFF000000;
+                  dynamicupcolor = 0xFFd495a3;
+                } else if (number == 5) {
+                  //light blue
+                  dynamicbgcolor = 0xFFCAF0F8;
+                  dynamicdowncolor = 0xFFFFFFFF;
+                  dynamicopcolor = 0xFF0077B6;
+                  dynamictextcolor = 0xFF000000;
+                  dynamictextcolor2 = 0xFF000000;
+                  dynamicupcolor = 0xFF903045E;
+                } else if (number == 6) {
+                  number = 0;
+                }
+                print(number);
+                setState(() {});
+              },
+              icon: Icon(
+                Icons.palette,
+                color: Color(dynamictextcolor),
+              ),
+            ),
+          ],
         ),
         body: Center(
           child: SafeArea(
@@ -140,7 +226,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
                     history,
                     style: TextStyle(
                       fontSize: 24,
-                      color: Colors.grey[800],
+                      color: Color(dynamictextcolor),
                     ),
                   ),
                 ),
@@ -151,53 +237,66 @@ class _CalculatorAppState extends State<CalculatorApp> {
                   padding: EdgeInsets.all(12),
                   child: Text(
                     textToDisplay,
-                    style: TextStyle(fontSize: 60),
+                    style:
+                        TextStyle(fontSize: 60, color: Color(dynamictextcolor)),
                   ),
                 ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  CalculatorButton("AC", 0xFF9E9E9E, 0xFFFFFFFF, 30),
-                  CalculatorButton("C", 0xFF9E9E9E, 0xFFFFFFFF, 30),
-                  CalculatorButton("←", 0xFFFFA000, 0xFFFFFFFF, 30),
-                  CalculatorButton("÷", 0xFFFFA000, 0xFFFFFFFF, 35),
+                  CalculatorButton("AC", dynamicupcolor, 0xFFFFFFFF, 30),
+                  CalculatorButton("C", dynamicupcolor, 0xFFFFFFFF, 30),
+                  CalculatorButton("←", dynamicopcolor, 0xFFFFFFFF, 30),
+                  CalculatorButton("÷", dynamicopcolor, 0xFFFFFFFF, 35),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  CalculatorButton("9", 0xFFEEEEEE, 0xFF000000, 30),
-                  CalculatorButton("8", 0xFFEEEEEE, 0xFF000000, 30),
-                  CalculatorButton("7", 0xFFEEEEEE, 0xFF000000, 30),
-                  CalculatorButton("✕", 0xFFFFA000, 0xFFFFFFFF, 30),
+                  CalculatorButton(
+                      "9", dynamicdowncolor, dynamictextcolor2, 30),
+                  CalculatorButton(
+                      "8", dynamicdowncolor, dynamictextcolor2, 30),
+                  CalculatorButton(
+                      "7", dynamicdowncolor, dynamictextcolor2, 30),
+                  CalculatorButton("✕", dynamicopcolor, 0xFFFFFFFF, 30),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  CalculatorButton("6", 0xFFEEEEEE, 0xFF000000, 30),
-                  CalculatorButton("5", 0xFFEEEEEE, 0xFF000000, 30),
-                  CalculatorButton("4", 0xFFEEEEEE, 0xFF000000, 30),
-                  CalculatorButton("–", 0xFFFFA000, 0xFFFFFFFF, 30),
+                  CalculatorButton(
+                      "6", dynamicdowncolor, dynamictextcolor2, 30),
+                  CalculatorButton(
+                      "5", dynamicdowncolor, dynamictextcolor2, 30),
+                  CalculatorButton(
+                      "4", dynamicdowncolor, dynamictextcolor2, 30),
+                  CalculatorButton("–", dynamicopcolor, 0xFFFFFFFF, 30),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  CalculatorButton("3", 0xFFEEEEEE, 0xFF000000, 30),
-                  CalculatorButton("2", 0xFFEEEEEE, 0xFF000000, 30),
-                  CalculatorButton("1", 0xFFEEEEEE, 0xFF000000, 30),
-                  CalculatorButton("+", 0xFFFFA000, 0xFFFFFFFF, 30),
+                  CalculatorButton(
+                      "3", dynamicdowncolor, dynamictextcolor2, 30),
+                  CalculatorButton(
+                      "2", dynamicdowncolor, dynamictextcolor2, 30),
+                  CalculatorButton(
+                      "1", dynamicdowncolor, dynamictextcolor2, 30),
+                  CalculatorButton("+", dynamicopcolor, 0xFFFFFFFF, 30),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  CalculatorButton("+/-", 0xFFEEEEEE, 0xFF000000, 30),
-                  CalculatorButton("0", 0xFFEEEEEE, 0xFF000000, 30),
-                  CalculatorButton("00", 0xFFEEEEEE, 0xFF000000, 30),
-                  CalculatorButton("=", 0xFFFFA000, 0xFFFFFFFF, 30),
+                  CalculatorButton(
+                      "+/-", dynamicdowncolor, dynamictextcolor2, 30),
+                  CalculatorButton(
+                      "0", dynamicdowncolor, dynamictextcolor2, 30),
+                  CalculatorButton(
+                      "00", dynamicdowncolor, dynamictextcolor2, 30),
+                  CalculatorButton("=", dynamicopcolor, 0xFFFFFFFF, 30),
                 ],
               ),
             ],
