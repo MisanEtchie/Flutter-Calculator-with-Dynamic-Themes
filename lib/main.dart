@@ -15,8 +15,8 @@ class CalculatorApp extends StatefulWidget {
 }
 
 class _CalculatorAppState extends State<CalculatorApp> {
-  late double firstNum;
-  late double secondNum;
+  late dynamic firstNum = 0;
+  late int secondNum;
   late String history = '';
   late String textToDisplay = '';
   late String res;
@@ -46,22 +46,23 @@ class _CalculatorAppState extends State<CalculatorApp> {
         child: TextButton(
           onPressed: () {
             print(text);
-            if (text == "AC") {
+            if (text == 'C') {
+              textToDisplay = '';
+              firstNum = 0;
+              secondNum = 0;
+              history = res;
+              res = '';
+            } else if (text == 'AC') {
               textToDisplay = '';
               firstNum = 0;
               secondNum = 0;
               res = '';
               history = '';
-            } else if (text == 'C') {
-              textToDisplay = '';
-              firstNum = 0;
-              secondNum = 0;
-              res = '';
             } else if (text == '+/-') {
               if (textToDisplay[0] != '-') {
                 res = '-' + textToDisplay;
               } else {
-                res = textToDisplay.substring(0);
+                res = textToDisplay.substring(1);
               }
             } else if (text == '←') {
               res = textToDisplay.substring(0, textToDisplay.length - 1);
@@ -69,47 +70,80 @@ class _CalculatorAppState extends State<CalculatorApp> {
                 text == '–' ||
                 text == '✕' ||
                 text == '÷') {
-              firstNum = double.parse(textToDisplay);
-              res = '';
-              operation = text;
-            } else if (text == '=') {
-              secondNum = double.parse(textToDisplay);
-              if (operation == '+') {
-                res = (firstNum + secondNum).toString();
-                history = firstNum.toString() +
-                    operation.toString() +
-                    secondNum.toString();
-              }
-              if (operation == '–') {
-                res = (firstNum - secondNum).toString();
-                history = firstNum.toString() +
-                    operation.toString() +
-                    secondNum.toString();
-              }
-              if (operation == '✕') {
-                res = (firstNum * secondNum).toString();
-                history = firstNum.toString() +
-                    operation.toString() +
-                    secondNum.toString();
-              }
-              if (operation == '÷') {
-                res = (firstNum / secondNum).toString();
-                history = firstNum.toString() +
-                    operation.toString() +
-                    secondNum.toString();
-              }
-            } else if (text == '0') {
-              if (double.parse(textToDisplay) % 1 == 0) {
-                double x;
-                x = double.parse(textToDisplay);
-                x = x * 10;
-                textToDisplay = x.toString();
+              if (firstNum != 1) {
+                firstNum = double.parse(textToDisplay);
+                res = '';
+                operation = text;
               } else {
-                res = double.parse(textToDisplay + '0').toString();
+                firstNum = int.parse(textToDisplay);
+                res = '';
+                operation = text;
               }
-            } else {
-              //res = int.parse(textToDisplay + text).toString();
-              res = double.parse(textToDisplay + text).toString();
+            } else if (text == '=') {
+              secondNum = int.parse(textToDisplay);
+              if (firstNum % 1 != 0) {
+                if (operation == '+') {
+                  res = (firstNum + secondNum.toDouble()).toString();
+                  history = firstNum.toString() +
+                      operation.toString() +
+                      secondNum.toString();
+                }
+                if (operation == '–') {
+                  res = (firstNum - secondNum.toDouble()).toString();
+                  history = firstNum.toString() +
+                      operation.toString() +
+                      secondNum.toString();
+                }
+                if (operation == '✕') {
+                  res = (firstNum * secondNum.toDouble()).toString();
+                  history = firstNum.toString() +
+                      operation.toString() +
+                      secondNum.toString();
+                }
+                if (operation == '÷') {
+                  res = (firstNum / secondNum.toDouble()).toString();
+                  history = firstNum.toString() +
+                      operation.toString() +
+                      secondNum.toString();
+                }
+              } else {
+                if (operation == '+') {
+                  res = (firstNum + secondNum).toString();
+                  history = firstNum.toString() +
+                      operation.toString() +
+                      secondNum.toString();
+                }
+                if (operation == '–') {
+                  res = (firstNum - secondNum).toString();
+                  history = firstNum.toString() +
+                      operation.toString() +
+                      secondNum.toString();
+                }
+                if (operation == '✕') {
+                  res = (firstNum * secondNum).toString();
+                  history = firstNum.toString() +
+                      operation.toString() +
+                      secondNum.toString();
+                }
+                if (operation == '÷') {
+                  res = (firstNum / secondNum).toString();
+                  history = firstNum.toString() +
+                      operation.toString() +
+                      secondNum.toString();
+                }
+              }
+            } else if (text == '1' ||
+                text == '2' ||
+                text == '3' ||
+                text == '4' ||
+                text == '5' ||
+                text == '6' ||
+                text == '7' ||
+                text == '8' ||
+                text == '9' ||
+                text == '0' ||
+                text == '00') {
+              res = int.parse(textToDisplay + text).toString();
             }
 
             setState(() {
@@ -143,7 +177,8 @@ class _CalculatorAppState extends State<CalculatorApp> {
         appBar: AppBar(
           title: Text(
             "Calculator",
-            style: TextStyle(color: Color(dynamictextcolor)),
+            style: TextStyle(
+                color: Color(dynamictextcolor), fontWeight: FontWeight.bold),
           ),
           backgroundColor: Color(dynamicbgcolor),
           elevation: 0,
@@ -194,12 +229,12 @@ class _CalculatorAppState extends State<CalculatorApp> {
                   dynamicupcolor = 0xFFd495a3;
                 } else if (number == 5) {
                   //light blue
-                  dynamicbgcolor = 0xFFCAF0F8;
+                  dynamicbgcolor = 0xFFe3f2fd;
                   dynamicdowncolor = 0xFFFFFFFF;
-                  dynamicopcolor = 0xFF0077B6;
+                  dynamicopcolor = 0xFF903045E;
                   dynamictextcolor = 0xFF000000;
                   dynamictextcolor2 = 0xFF000000;
-                  dynamicupcolor = 0xFF903045E;
+                  dynamicupcolor = 0xFF0077B6;
                 } else if (number == 6) {
                   number = 0;
                 }
@@ -260,7 +295,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
                       "8", dynamicdowncolor, dynamictextcolor2, 30),
                   CalculatorButton(
                       "7", dynamicdowncolor, dynamictextcolor2, 30),
-                  CalculatorButton("✕", dynamicopcolor, 0xFFFFFFFF, 30),
+                  CalculatorButton("✕", dynamicopcolor, 0xFFFFFFFF, 25),
                 ],
               ),
               Row(
